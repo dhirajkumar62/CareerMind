@@ -70,11 +70,17 @@ export const registerUser = asyncHandler(async (req, res) => {
     </div>
   `;
 
-  await sendEmail({
-    email: user.email,
-    subject: "Verify your CareerMinds Account 🚀",
-    html: welcomeHTML,
-  });
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Verify your CareerMinds Account 🚀",
+      html: welcomeHTML,
+    });
+  } catch (error) {
+    // Do not leave an unverified account that prevents the user from retrying.
+    await user.deleteOne();
+    throw error;
+  }
 
   res.status(201).json({
     message: "Registration successful. Please check your email for the OTP.",
