@@ -1,8 +1,16 @@
 import axios from "axios";
 import useAuthStore from "../store/authStore";
 
+const configuredApiUrl =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:2000/api";
+const normalizedApiUrl = configuredApiUrl.replace(/\/+$/, "");
+// Accept either the API URL or the deployed server origin in VITE_API_BASE_URL.
+const apiBaseUrl = normalizedApiUrl.endsWith("/api")
+  ? normalizedApiUrl
+  : `${normalizedApiUrl}/api`;
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:2000/api",
+  baseURL: apiBaseUrl,
 });
 
 // Attach token automatically

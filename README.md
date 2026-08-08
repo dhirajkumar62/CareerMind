@@ -151,6 +151,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 1. Import the repo on [Vercel](https://vercel.com)
 2. Set **Root Directory** to `client`
 3. Add environment variable: `VITE_API_BASE_URL` = `https://your-backend.onrender.com/api`
+   (The client also accepts the server origin without `/api`, but the explicit
+   API URL is recommended.)
 
 ### Backend → Render
 1. Create a **Web Service** on [Render](https://render.com)
