@@ -3,15 +3,18 @@ import useAuthStore from "../store/authStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
-import { FiLogOut, FiUser, FiSettings, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
+import { FiLogOut, FiUser, FiSettings, FiChevronDown, FiMenu, FiX, FiSun, FiMoon, FiMonitor, FiCheck } from "react-icons/fi";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();
+  const { theme, setTheme } = useTheme();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -130,7 +133,7 @@ export default function Sidebar() {
                   </button>
 
                   <button
-                    onClick={() => { setIsDropdownOpen(false); }}
+                    onClick={() => { setIsDropdownOpen(false); setIsPreferencesOpen(true); }}
                     className="w-full text-left px-4 py-2.5 text-[13px] text-slate-600 hover:bg-slate-50 font-bold transition-all flex items-center gap-3 group"
                   >
                     <div className="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">
@@ -165,6 +168,50 @@ export default function Sidebar() {
           </button>
         </div>
       </motion.header>
+
+      <AnimatePresence>
+        {isPreferencesOpen && (
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/40 px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsPreferencesOpen(false)}
+          >
+            <motion.div
+              className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl"
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 12 }}
+              onClick={(event) => event.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="theme-preferences-title"
+            >
+              <div className="mb-5 flex items-start justify-between">
+                <div>
+                  <h2 id="theme-preferences-title" className="text-xl font-black text-slate-900">Preferences</h2>
+                  <p className="mt-1 text-sm text-slate-500">Choose your color appearance.</p>
+                </div>
+                <button onClick={() => setIsPreferencesOpen(false)} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="Close preferences"><FiX /></button>
+              </div>
+              <div className="space-y-2">
+                {[{ id: "light", label: "Light", Icon: FiSun, description: "Always use light mode" }, { id: "dark", label: "Dark", Icon: FiMoon, description: "Always use dark mode" }, { id: "auto", label: "Auto", Icon: FiMonitor, description: "Match your device" }].map(({ id, label, Icon, description }) => (
+                  <button
+                    key={id}
+                    onClick={() => setTheme(id)}
+                    className={`flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors ${theme === id ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-700 hover:border-blue-200 hover:bg-slate-50"}`}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="flex-1"><span className="block font-bold">{label}</span><span className="text-xs opacity-70">{description}</span></span>
+                    {theme === id && <FiCheck className="h-5 w-5" />}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Slide-Out Menu */}
       <AnimatePresence>

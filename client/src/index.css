@@ -48,6 +48,29 @@ body,
   --glass-border: rgba(255, 255, 255, 0.5);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --softbg: #0f172a;
+  --glass-bg: rgba(15, 23, 42, 0.76);
+  --glass-border: rgba(148, 163, 184, 0.16);
+}
+
+:root[data-theme="dark"] body { color: #e2e8f0; }
+:root[data-theme="dark"] .bg-white,
+:root[data-theme="dark"] .bg-white\/80,
+:root[data-theme="dark"] .bg-white\/90 { background-color: #0f172a !important; }
+:root[data-theme="dark"] .bg-slate-50,
+:root[data-theme="dark"] .bg-slate-100 { background-color: #1e293b !important; }
+:root[data-theme="dark"] .text-slate-900,
+:root[data-theme="dark"] .text-slate-800,
+:root[data-theme="dark"] .text-slate-700 { color: #e2e8f0 !important; }
+:root[data-theme="dark"] .text-slate-600,
+:root[data-theme="dark"] .text-slate-500,
+:root[data-theme="dark"] .text-slate-400 { color: #94a3b8 !important; }
+:root[data-theme="dark"] .border-slate-50,
+:root[data-theme="dark"] .border-slate-100,
+:root[data-theme="dark"] .border-slate-200 { border-color: #334155 !important; }
+
 body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
